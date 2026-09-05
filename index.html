@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实践旅游之旅</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+    }
+
+    .page {
+      width: 100vw;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ========== 欢迎页 ========== */
+    #page-welcome {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1a3a5c 0%, #2d6a4f 50%, #40916c 100%);
+      height: 100vh;
+    }
+
+    .welcome-title {
+      font-size: 3rem;
+      color: #fff;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      letter-spacing: 8px;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 80px;
+      letter-spacing: 4px;
+    }
+
+    #startBtn {
+      padding: 20px 70px;
+      font-size: 1.6rem;
+      background-color: #fff;
+      color: #1a3a5c;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      letter-spacing: 4px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    #startBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    #exitBtn {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      padding: 8px 22px;
+      font-size: 0.9rem;
+      background-color: rgba(255,255,255,0.2);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #exitBtn:hover {
+      background-color: rgba(255,255,255,0.35);
+    }
+
+    /* ========== 罗列页通用 ========== */
+    .list-page {
+      background: linear-gradient(180deg, #f0f4f8 0%, #d9e2ec 100%);
+      padding: 30px 20px 80px;
+      display: none;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      color: #1a3a5c;
+      font-weight: bold;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: #6c757d;
+      letter-spacing: 2px;
+    }
+
+    /* ========== 大区卡片 ========== */
+    .region-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .region-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 35px 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border-left: 5px solid #2d6a4f;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .region-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, rgba(45,106,79,0.08), transparent);
+      border-radius: 0 0 0 100%;
+    }
+
+    .region-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      border-left-color: #40916c;
+    }
+
+    .region-card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    .region-card-name {
+      font-size: 1.4rem;
+      color: #1a3a5c;
+      font-weight: bold;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .region-card-desc {
+      font-size: 0.9rem;
+      color: #6c757d;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .region-card-count {
+      display: inline-block;
+      background: linear-gradient(135deg, #2d6a4f, #40916c);
+      color: #fff;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    /* ========== 小地点罗列 ========== */
+    .spot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .spot-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 18px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 2px solid transparent;
+    }
+
+    .spot-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      border-color: #40916c;
+    }
+
+    .spot-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #2d6a4f, #40916c);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .spot-name {
+      font-size: 0.95rem;
+      color: #333;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* ========== 返回按钮 ========== */
+    .back-btn {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      padding: 12px 30px;
+      background-color: #1a3a5c;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .back-btn:hover {
+      background-color: #2d5a8a;
+      transform: translateY(-2px);
+    }
+
+    /* ========== 详情页 ========== */
+    #page-detail {
+      display: none;
+      background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 30px 20px 90px;
+    }
+
+    .detail-container {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .detail-name {
+      font-size: 2rem;
+      color: #1a3a5c;
+      margin-bottom: 8px;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+
+    .detail-id {
+      text-align: center;
+      color: #6c757d;
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+    }
+
+    .detail-image {
+      width: 100%;
+      height: 380px;
+      background: linear-gradient(135deg, #dee2e6, #ced4da);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      margin-bottom: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .detail-image-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      opacity: 0.5;
+    }
+
+    .detail-desc {
+      line-height: 2;
+      color: #495057;
+      font-size: 1.05rem;
+      text-indent: 2em;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== 欢迎页 ========== -->
+  <div id="page-welcome" class="page">
+    <h1 class="welcome-title">实践旅游之旅</h1>
+    <p class="welcome-subtitle">探索昆明 · 寻访历史 · 感悟文化</p>
+    <button id="startBtn">开启旅程</button>
+    <button id="exitBtn">离开</button>
+  </div>
+
+  <!-- ========== 大区罗列页 ========== -->
+  <div id="page-region-list" class="list-page">
+    <div class="page-header">
+      <h2 class="page-title">选择探索区域</h2>
+      <p class="page-subtitle">共 4 个区域 · 50 个实践地点</p>
+    </div>
+    <div id="regionCards" class="region-grid"></div>
+    <button class="back-btn" onclick="showWelcome()">返回</button>
+  </div>
+
+  <!-- ========== 小地点罗列页 ========== -->
+  <div id="page-spot-list" class="list-page">
+    <div class="page-header">
+      <h2 id="spotListTitle" class="page-title"></h2>
+      <p id="spotListSubtitle" class="page-subtitle"></p>
+    </div>
+    <div id="spotCards" class="spot-grid"></div>
+    <button class="back-btn" onclick="showPage('page-region-list')">返回</button>
+  </div>
+
+  <!-- ========== 详情页 ========== -->
+  <div id="page-detail" class="page">
+    <div class="detail-container">
+      <h2 id="spotName" class="detail-name"></h2>
+      <p id="spotId" class="detail-id"></p>
+      <div class="detail-image">
+        <div class="detail-image-icon">🖼️</div>
+        <div>图片占位（后期插入对应地点实景图）</div>
+      </div>
+      <div class="detail-desc" id="spotDesc">
+        这里是该实践地点的详细简介内容，可补充历史背景、文化意义、参观指南、实践要点等相关介绍，后期可根据实际资料完善填充。
+      </div>
+    </div>
+    <button class="back-btn" onclick="showPage('page-spot-list')">返回</button>
+  </div>
+
+  <script>
+    // ==================== 数据定义（按地理位置重新分配） ====================
+    const regions = [
+      {
+        id: 'dl',
+        name: '云南大学东陆校区',
+        icon: '🏛️',
+        desc: '百年云大老校区，翠湖畔的历史建筑群，会泽院、至公堂、银杏道等标志性景点汇聚于此。',
+        spots: [
+          {id:1,  name:'蛟腾起凤牌坊'},
+          {id:2,  name:'会泽院'},
+          {id:3,  name:'云南大学历史博物馆'},
+          {id:4,  name:'铜炮'},
+          {id:5,  name:'李维恭烈士纪念碑'},
+          {id:6,  name:'云南大学烈士纪念碑'},
+          {id:7,  name:'风节亭'},
+          {id:8,  name:'钟楼'},
+          {id:9,  name:'第一天文点'},
+          {id:10, name:'映秋院'},
+          {id:11, name:'至公堂'},
+          {id:12, name:'东号舍'},
+          {id:13, name:'熊庆来·李广田旧居'},
+          {id:14, name:'银杏道'},
+          {id:15, name:'理科三馆'},
+          {id:16, name:'伍马瑶人类学博物馆'},
+          {id:17, name:'怀周院'},
+          {id:18, name:'泽清堂'},
+          {id:21, name:'日晷'},
+          {id:22, name:'晚翠园'},
+          {id:23, name:'碑廊'},
+          {id:29, name:'袁嘉谷旧居'}
+        ]
+      },
+      {
+        id: 'yc',
+        name: '云南大学呈贡校区',
+        icon: '🌿',
+        desc: '云大新校区，泽湖、云山、百家大道、思奇园等现代校园景观与人文设施，展现学府新貌。',
+        spots: [
+          {id:19, name:'明远楼'},
+          {id:20, name:'泽湖'},
+          {id:24, name:'百家大道'},
+          {id:25, name:'思奇园'},
+          {id:26, name:'艾思奇展厅'},
+          {id:27, name:'云山天文台'},
+          {id:28, name:'云山植物园'},
+          {id:50, name:'主题书展（图书馆）'}
+        ]
+      },
+      {
+        id: 'cg',
+        name: '呈贡校区周边',
+        icon: '🌺',
+        desc: '环绕呈贡的人文与自然景观，斗南花都、滇池湿地、魁阁名人故居、呈贡文庙，领略春城花都。',
+        spots: [
+          {id:37, name:'张天虚故居'},
+          {id:38, name:'费孝通旧居'},
+          {id:39, name:'魁阁'},
+          {id:40, name:'冰心默庐'},
+          {id:41, name:'呈贡文庙'},
+          {id:42, name:'三台山公园'},
+          {id:43, name:'中国斗南花卉展览馆'},
+          {id:44, name:'昆明斗南花卉市场'},
+          {id:45, name:'卧龙古渔村'},
+          {id:46, name:'捞鱼河国家湿地公园'},
+          {id:47, name:'海晏村'}
+        ]
+      },
+      {
+        id: 'km',
+        name: '昆明老城市区',
+        icon: '🏯',
+        desc: '春城核心老城区，翠湖周边遍布历史遗迹、名人故居与红色纪念馆，触摸昆明百年城市记忆。',
+        spots: [
+          {id:30, name:'张九龄旧居'},
+          {id:31, name:'云南解放纪念馆'},
+          {id:32, name:'云南起义纪念馆'},
+          {id:33, name:'昆明朱德旧居纪念馆'},
+          {id:34, name:'聂耳故居纪念馆'},
+          {id:35, name:'抗战胜利纪念堂'},
+          {id:36, name:'云南省博物馆'},
+          {id:48, name:'云南陆军讲武堂'},
+          {id:49, name:'云南白药厂'}
+        ]
+      }
+    ];
+
+    let currentRegion = null;
+
+    // ==================== 页面切换（修复欢迎页flex布局问题） ====================
+    function showPage(pageId) {
+      // 隐藏所有页面
+      document.querySelectorAll('.page, .list-page').forEach(page => {
+        page.style.display = 'none';
+      });
+      // 显示目标页面
+      const target = document.getElementById(pageId);
+      if (pageId === 'page-welcome') {
+        target.style.display = 'flex';  // 欢迎页用flex保持居中
+      } else {
+        target.style.display = 'block';
+      }
+      window.scrollTo(0, 0);
+    }
+
+    function showWelcome() {
+      showPage('page-welcome');
+    }
+
+    // ==================== 渲染大区卡片 ====================
+    function renderRegionCards() {
+      const container = document.getElementById('regionCards');
+      container.innerHTML = '';
+
+      regions.forEach(region => {
+        const card = document.createElement('div');
+        card.className = 'region-card';
+        card.innerHTML = `
+          <div class="region-card-icon">${region.icon}</div>
+          <div class="region-card-name">${region.name}</div>
+          <div class="region-card-desc">${region.desc}</div>
+          <div class="region-card-count">${region.spots.length} 个实践地点</div>
+        `;
+        card.addEventListener('click', () => enterRegion(region));
+        container.appendChild(card);
+      });
+    }
+
+    // ==================== 进入大区 ====================
+    function enterRegion(region) {
+      currentRegion = region;
+      document.getElementById('spotListTitle').textContent = region.name;
+      document.getElementById('spotListSubtitle').textContent = `共 ${region.spots.length} 个实践地点`;
+      renderSpotCards(region.spots);
+      showPage('page-spot-list');
+    }
+
+    // ==================== 渲染小地点卡片 ====================
+    function renderSpotCards(spots) {
+      const container = document.getElementById('spotCards');
+      container.innerHTML = '';
+
+      spots.forEach(spot => {
+        const card = document.createElement('div');
+        card.className = 'spot-card';
+        card.innerHTML = `
+          <div class="spot-num">${spot.id}</div>
+          <div class="spot-name">${spot.name}</div>
+        `;
+        card.addEventListener('click', () => showSpotDetail(spot));
+        container.appendChild(card);
+      });
+    }
+
+    // ==================== 显示详情 ====================
+    function showSpotDetail(spot) {
+      document.getElementById('spotName').textContent = spot.name;
+      document.getElementById('spotId').textContent = `地点编号：No.${spot.id}`;
+      showPage('page-detail');
+    }
+
+    // ==================== 初始化 ====================
+    document.getElementById('startBtn').addEventListener('click', () => {
+      renderRegionCards();
+      showPage('page-region-list');
+    });
+
+    document.getElementById('exitBtn').addEventListener('click', () => {
+      if (confirm('确定要结束旅程吗？')) {
+        window.close();
+      }
+    });
+  </script>
+</body>
+</html>
