@@ -66,7 +66,7 @@
     }
 
     #exitBtn {
-      position: absolute;
+      position: fixed;
       bottom: 30px;
       right: 30px;
       padding: 8px 22px;
@@ -132,7 +132,7 @@
 
     .region-card::before {
       content: '';
-      position: absolute;
+      position: fixed;
       top: 0;
       right: 0;
       width: 100px;
@@ -228,7 +228,7 @@
 
     /* ========== 返回按钮 ========== */
     .back-btn {
-      position: absolute;
+      position: fixed;
       bottom: 25px;
       left: 25px;
       padding: 12px 30px;
@@ -374,23 +374,21 @@
           {id:13, name:'熊庆来·李广田旧居'},
           {id:14, name:'银杏道'},
           {id:15, name:'理科三馆'},
-          {id:16, name:'伍马瑶人类学博物馆'},
           {id:17, name:'怀周院'},
-          {id:18, name:'泽清堂'},
-          {id:21, name:'日晷'},
-          {id:22, name:'晚翠园'},
-          {id:23, name:'碑廊'},
-          {id:29, name:'袁嘉谷旧居'}
+          {id:18, name:'泽清堂'}
         ]
       },
       {
         id: 'yc',
         name: '云南大学呈贡校区',
         icon: '🌿',
-        desc: '云大新校区，泽湖、云山、百家大道、思奇园等现代校园景观与人文设施，展现学府新貌。',
+        desc: '云大新校区，泽湖、云山、百家大道、思奇园、日晷、晚翠园等现代校园景观与人文设施，展现学府新貌。',
         spots: [
           {id:19, name:'明远楼'},
           {id:20, name:'泽湖'},
+          {id:21, name:'日晷'},
+          {id:22, name:'晚翠园'},
+          {id:23, name:'碑廊'},
           {id:24, name:'百家大道'},
           {id:25, name:'思奇园'},
           {id:26, name:'艾思奇展厅'},
@@ -403,7 +401,7 @@
         id: 'cg',
         name: '呈贡校区周边',
         icon: '🌺',
-        desc: '环绕呈贡的人文与自然景观，斗南花都、滇池湿地、魁阁名人故居、呈贡文庙，领略春城花都。',
+        desc: '环绕呈贡的人文与自然景观，斗南花都、滇池湿地、魁阁名人故居、呈贡文庙、云南白药厂，领略春城花都。',
         spots: [
           {id:37, name:'张天虚故居'},
           {id:38, name:'费孝通旧居'},
@@ -415,15 +413,18 @@
           {id:44, name:'昆明斗南花卉市场'},
           {id:45, name:'卧龙古渔村'},
           {id:46, name:'捞鱼河国家湿地公园'},
-          {id:47, name:'海晏村'}
+          {id:47, name:'海晏村'},
+          {id:49, name:'云南白药厂'}
         ]
       },
       {
         id: 'km',
         name: '昆明老城市区',
         icon: '🏯',
-        desc: '春城核心老城区，翠湖周边遍布历史遗迹、名人故居与红色纪念馆，触摸昆明百年城市记忆。',
+        desc: '春城核心老城区，翠湖周边遍布历史遗迹、名人故居与红色纪念馆，伍马瑶博物馆、袁嘉谷旧居，触摸昆明百年城市记忆。',
         spots: [
+          {id:16, name:'伍马瑶人类学博物馆'},
+          {id:29, name:'袁嘉谷旧居'},
           {id:30, name:'张九龄旧居'},
           {id:31, name:'云南解放纪念馆'},
           {id:32, name:'云南起义纪念馆'},
@@ -431,8 +432,7 @@
           {id:34, name:'聂耳故居纪念馆'},
           {id:35, name:'抗战胜利纪念堂'},
           {id:36, name:'云南省博物馆'},
-          {id:48, name:'云南陆军讲武堂'},
-          {id:49, name:'云南白药厂'}
+          {id:48, name:'云南陆军讲武堂'}
         ]
       }
     ];
@@ -440,7 +440,12 @@
     let currentRegion = null;
 
     // ==================== 页面切换（修复欢迎页flex布局问题） ====================
+    const pageScrollPositions = {};
+    let currentPageId = 'page-welcome';
+
     function showPage(pageId) {
+      // 记录当前页面的滚动位置
+      pageScrollPositions[currentPageId] = window.scrollY;
       // 隐藏所有页面
       document.querySelectorAll('.page, .list-page').forEach(page => {
         page.style.display = 'none';
@@ -448,11 +453,18 @@
       // 显示目标页面
       const target = document.getElementById(pageId);
       if (pageId === 'page-welcome') {
-        target.style.display = 'flex';  // 欢迎页用flex保持居中
+        target.style.display = 'flex';
       } else {
         target.style.display = 'block';
       }
-      window.scrollTo(0, 0);
+      currentPageId = pageId;
+      // 恢复滚动位置（第一次进入页面时在顶部）
+      const savedPos = pageScrollPositions[pageId];
+      if (savedPos !== undefined && savedPos > 0) {
+        window.scrollTo(0, savedPos);
+      } else {
+        window.scrollTo(0, 0);
+      }
     }
 
     function showWelcome() {
