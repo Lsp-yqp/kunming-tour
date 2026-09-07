@@ -18,6 +18,40 @@
       position: relative;
       display: none;
     }
+    #page-goodbye {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a3a5c 0%, #2d5a3d 100%);
+      color: white;
+      text-align: center;
+    }
+    #page-goodbye h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    #page-goodbye p {
+      font-size: 20px;
+      opacity: 0.85;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+    #page-goodbye .restart-btn {
+      padding: 14px 40px;
+      font-size: 18px;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    #page-goodbye .restart-btn:hover {
+      background: rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.6);
+    }
 
     /* ========== 欢迎页 ========== */
     #page-welcome {
@@ -319,6 +353,13 @@
     <button id="exitBtn">离开</button>
   </div>
 
+  <!-- 再见页面 -->
+  <div id="page-goodbye" class="page">
+    <h1>旅程结束</h1>
+    <p>感谢你的探索与陪伴<br>历史的足迹、人文的温度、新时代的发展<br>都将留在这段旅程的记忆中</p>
+    <button class="restart-btn" onclick="location.reload()">重新开启旅程</button>
+  </div>
+
   <!-- ========== 大区罗列页 ========== -->
   <div id="page-region-list" class="list-page" style="display: none;">
     <div class="page-header">
@@ -543,7 +584,9 @@
 
     document.getElementById('exitBtn').addEventListener('click', () => {
       if (confirm('确定要结束旅程吗？')) {
-        window.close();
+        document.querySelectorAll('.page, .list-page').forEach(p => p.style.display = 'none');
+        document.getElementById('page-goodbye').style.display = 'flex';
+        window.scrollTo(0, 0);
       }
     });
   </script>
