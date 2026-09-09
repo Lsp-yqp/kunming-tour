@@ -467,6 +467,40 @@
       background: white;
       color: #2d5a3d;
     }
+
+    /* 页面过渡动画 */
+    .page, .list-page {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* 详情页图片加载动画 */
+    .detail-image {
+      transition: opacity 0.5s ease-in-out;
+    }
+    /* 卡片悬停动画 */
+    .spot-card, .region-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .spot-card:hover, .region-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    /* 按钮点击动画 */
+    button {
+      transition: all 0.2s ease;
+    }
+    button:active {
+      transform: scale(0.97);
+    }
 </style>
 </head>
 <body>
