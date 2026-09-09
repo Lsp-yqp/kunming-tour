@@ -748,8 +748,8 @@
         document.getElementById('searchInput').value = '';
         document.getElementById('searchDropdown').classList.remove('show');
         document.getElementById('searchDropdown').innerHTML = '';
-        detailReturnPage = 'page-region-list';
         showSpotDetail(spot);
+        detailReturnPage = 'page-region-list';
       }
     }
 
@@ -790,9 +790,7 @@
     let currentSpotId = null;
 
     function showSpotDetail(spot) {
-      if (detailReturnPage !== 'page-region-list') {
-        detailReturnPage = 'page-spot-list';
-      }
+      detailReturnPage = 'page-spot-list';
       currentSpotId = spot.id;
       document.getElementById('spotName').textContent = spot.name;
       document.getElementById('spotId').textContent = '地点编号：No.' + spot.id;
