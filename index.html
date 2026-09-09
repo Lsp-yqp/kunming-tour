@@ -871,7 +871,8 @@
           document.getElementById('spotImage').style.backgroundImage = 'url(' + img.src + ')';
         }
       };
-      img.src = 'images/spot_' + spotId + '.jpg';
+      img.src = 'images/spot_' + spotId + '.webp';
+      img.onerror = function() { this.src = 'images/spot_' + spotId + '.jpg'; };
     }
 
     // 更新上/下一个按钮状态
