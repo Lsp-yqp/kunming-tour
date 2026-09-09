@@ -533,7 +533,6 @@
       <div id="searchResultMsg" class="search-result-msg"></div>
     </div>
     <div id="regionCards" class="region-grid"></div>
-    <button class="back-btn" onclick="showWelcome()">返回</button>
   </div>
 
   <!-- ========== 小地点罗列页 ========== -->
@@ -543,7 +542,6 @@
       <p id="spotListSubtitle" class="page-subtitle"></p>
     </div>
     <div id="spotCards" class="spot-grid"></div>
-    <button class="back-btn" onclick="showPage('page-region-list')">返回</button>
   </div>
 
   <!-- ========== 详情页 ========== -->
@@ -558,8 +556,10 @@
         <button id="nextSpotBtn" onclick="nextSpot()">下一个 →</button>
       </div>
     </div>
-    <button class="back-btn" onclick="backFromDetail()">返回</button>
   </div>
+
+  <!-- 全局返回按钮 -->
+  <button id="globalBackBtn" class="back-btn" style="display:none;">返回</button>
 
   <script>
     // ==================== 数据定义（按地理位置重新分配） ====================
@@ -675,6 +675,28 @@
         window.scrollTo(0, savedPos);
       } else {
         window.scrollTo(0, 0);
+      }
+      // 更新全局返回按钮
+      updateGlobalBackBtn(pageId);
+    }
+
+    // 更新全局返回按钮的显示和行为
+    function updateGlobalBackBtn(pageId) {
+      const btn = document.getElementById('globalBackBtn');
+      if (pageId === 'page-welcome' || pageId === 'page-goodbye') {
+        btn.style.display = 'none';
+        return;
+      }
+      btn.style.display = 'block';
+      // 清除旧的点击事件
+      btn.onclick = null;
+      // 根据页面设置返回行为
+      if (pageId === 'page-region-list') {
+        btn.onclick = showWelcome;
+      } else if (pageId === 'page-spot-list') {
+        btn.onclick = () => showPage('page-region-list');
+      } else if (pageId === 'page-detail') {
+        btn.onclick = backFromDetail;
       }
     }
 
