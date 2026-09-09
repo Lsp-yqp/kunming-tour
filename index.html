@@ -831,7 +831,11 @@
       if (currentSpotId > 1) {
         var newId = currentSpotId - 1;
         var spot = allSpotsWithRegion.find(s => s.id === newId);
-        if (spot) showSpotDetail(spot);
+        if (spot) {
+          var returnPage = detailReturnPage;
+          showSpotDetail(spot);
+          detailReturnPage = returnPage;
+        }
       }
     }
 
@@ -840,7 +844,11 @@
       if (currentSpotId < 50) {
         var newId = currentSpotId + 1;
         var spot = allSpotsWithRegion.find(s => s.id === newId);
-        if (spot) showSpotDetail(spot);
+        if (spot) {
+          var returnPage = detailReturnPage;
+          showSpotDetail(spot);
+          detailReturnPage = returnPage;
+        }
       }
     }
 
