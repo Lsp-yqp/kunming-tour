@@ -313,16 +313,16 @@
 
     .detail-image {
       width: 100%;
-      height: 380px;
-      background: linear-gradient(135deg, #dee2e6, #ced4da);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #6c757d;
       margin-bottom: 25px;
       border-radius: 12px;
+      overflow: hidden;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, #dee2e6, #ced4da);
+    }
+    .detail-image img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     .detail-image-icon {
@@ -549,7 +549,7 @@
     <div class="detail-container">
       <h2 id="spotName" class="detail-name"></h2>
       <p id="spotId" class="detail-id"></p>
-      <div class="detail-image" id="spotImage" style="background-size:cover;background-position:center;"></div>
+      <div class="detail-image"><img id="spotImage" src="" alt="地点图片"></div>
       <div class="detail-desc" id="spotDesc"></div>
       <div class="detail-nav">
         <button id="prevSpotBtn" onclick="prevSpot()">← 上一个</button>
@@ -861,7 +861,7 @@
       var data = spotData[spot.id];
       if (data) {
         // 先显示缩略图
-        document.getElementById('spotImage').style.backgroundImage = 'url(' + data.img + ')';
+        document.getElementById('spotImage').src = data.img;
         document.getElementById('spotDesc').textContent = data.desc;
         // 渐进式加载高清图
         loadHighResImage(spot.id);
@@ -876,7 +876,7 @@
       var img = new Image();
       img.onload = function() {
         if (currentSpotId === spotId) {
-          document.getElementById('spotImage').style.backgroundImage = 'url(' + img.src + ')';
+          document.getElementById('spotImage').src = img.src;
         }
       };
       img.src = 'images/spot_' + spotId + '.webp';
