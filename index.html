@@ -562,6 +562,14 @@
   <button id="globalBackBtn" class="back-btn" style="display:none;">返回</button>
 
   <script>
+    // 页面加载完成后后台预加载所有50张高清图片
+    window.addEventListener('load', function() {
+      for (let i = 1; i <= 50; i++) {
+        const preloadImg = new Image();
+        preloadImg.src = 'images/spot_' + i + '.webp';
+      }
+    });
+
     // ==================== 数据定义（按地理位置重新分配） ====================
     const regions = [
       {
